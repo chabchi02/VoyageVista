@@ -7,3 +7,9 @@ VoyageVista is a versatile travel app designed to simplify your exploration of N
 | Restaurants  | Google Places API    |
 | Hotels | Hotels.com/Google Places API     |
 | Events    | Ticketmaster    |
+
+Here are some of the benefits of using VoyageVista:
+
+Save time: VoyageVista takes the hassle out of vacation planning. Just open the app and see a list of recommended hotels, restaurants, and events near you.
+Get personalized recommendations: VoyageVista uses AI to generate personalized itineraries based on your interests and budget.
+Save money: VoyageVista lets you know if there are any City Pass or Go City packages available, which can save you money on attractions.

@@ -3,8 +3,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient2 {
     private static Retrofit retrofit;
-    static String lat = MainActivity.Lat;
-    static String lon = MainActivity.Long;
+    static String lat = userinfo.Lat;
+    static String lon = userinfo.Long;
     private static String BASE_URL = "https://maps.googleapis.com/";
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

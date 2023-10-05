@@ -10,12 +10,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +32,8 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -55,33 +59,45 @@ public class MainActivity extends AppCompatActivity {
 
 
     private LocationManager locationManager;
-    public static String Lat;
-    public static String Long;
     private ListView listView;
     private TextView text3;
     private ImageView cityimage;
-    private String usercityname;
+    BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getLocationFromUser();
-        setupsearchbar();
+        //setupsearchbar();
+        bnv = findViewById(R.id.bottom_navigation);
+        bnv.bringToFront();
+        bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if(id == R.id.item_3){
+                    Intent intent = new Intent(getApplicationContext(),RestautantActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
         }
 
     private void setupcityname() {
         text3 = findViewById(R.id.text3);
         Methods2 methods2 = RetrofitClient2.getRetrofitInstance().create(Methods2.class);
-        String ltlg = Lat + "," + Long;
+        String ltlg = userinfo.Lat + "," + userinfo.Long;
         Call< Model2 > call = methods2.getAllData(ltlg,"true","AIzaSyA5jevoRIytpKmKovpxlmASmrheQ6s_9jM");
         call.enqueue(new Callback < Model2 > () {
             @Override
             public void onResponse(Call < Model2 > call, Response < Model2 > response) {
                 Model2.Plus_code results = response.body().getplus_code();
                 String[] cityname = results.getcompound_code().split(" ", 2)[1].split(",");
-                text3.setText(cityname[cityname.length-3]);
-                usercityname = cityname[cityname.length-3];
+                text3.setText("You're in " + cityname[cityname.length-3].replaceAll("\\s+","") + "!");
+                userinfo.usercityname = cityname[cityname.length-3].replaceAll("\\s+","");
                 setupcityimage();
             }
             @Override
@@ -94,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupcityimage() {
         cityimage = findViewById(R.id.imageView2);
         Methods3 methods3 = RetrofitClient3.getRetrofitInstance().create(Methods3.class);
-        Call< Model3 > call = methods3.getAllData(usercityname);
+        Call< Model3 > call = methods3.getAllData(userinfo.usercityname);
         call.enqueue(new Callback < Model3 > () {
             @Override
             public void onResponse(Call < Model3 > call, Response < Model3 > response) {
@@ -110,10 +126,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
     private void setuprestaurantlist() {
-        listView = findViewById(R.id.superListView);
+        listView = findViewById(R.id.superListView2);
         Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
-        String loc = Lat + "," + Long;
+        String loc = userinfo.Lat + "," + userinfo.Long;
         Call< Model > call = methods.getAllData(loc);
         call.enqueue(new Callback < Model > () {
             @Override
@@ -132,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+     */
+
+    /*
     private void setupsearchbar() {
         Places.initialize(getApplicationContext(), "AIzaSyA5jevoRIytpKmKovpxlmASmrheQ6s_9jM");
         PlacesClient placesClient = Places.createClient(this);
@@ -161,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+     */
 
     private void getLocationFromUser() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -171,10 +192,10 @@ public class MainActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                Lat = String.valueOf(location.getLatitude());
-                Long = String.valueOf(location.getLongitude());
+                userinfo.Lat = String.valueOf(location.getLatitude());
+                userinfo.Long = String.valueOf(location.getLongitude());
                 setupcityname();
-                setuprestaurantlist();
+                //setuprestaurantlist();
             }
         });
     }
