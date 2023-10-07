@@ -41,7 +41,16 @@ public class RestautantActivity extends AppCompatActivity {
             }
         });
         setuprestaurantlist();
+        /*
+        ListView listView = findViewById(R.id.superListView2);
+        ArrayList<Restaurant> resList = new ArrayList<>();
+        resList.add(new Restaurant("Tim Hortons", "Orleans, ON"));
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, R.layout.list_row, resList);
+        listView.setAdapter(restaurantAdapter);
+
+         */
     }
+
 
     private void setuprestaurantlist() {
         ListView listView = findViewById(R.id.superListView2);
@@ -52,11 +61,12 @@ public class RestautantActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < Model > call, Response < Model > response) {
                 ArrayList< Model.results > results = response.body().getResults();
-                String[] names = new String[results.size()];
+                ArrayList<Restaurant> resList = new ArrayList<>();
                 for (int i = 0; i < results.size(); i++) {
-                    names[i] = "name : " + results.get(i).getname();
+                    resList.add(new Restaurant(results.get(i).getname(), results.get(i).getVicinity(), results.get(i).getPrice_level(), results.get(i).getPhotos().get(0).getPhoto_reference()));
                 }
-                listView.setAdapter(new ArrayAdapter< String >(getApplicationContext(), android.R.layout.simple_list_item_1, names));
+                RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getApplicationContext(), R.layout.list_row, resList);
+                listView.setAdapter(restaurantAdapter);
             }
             @Override
             public void onFailure(Call < Model > call, Throwable t) {

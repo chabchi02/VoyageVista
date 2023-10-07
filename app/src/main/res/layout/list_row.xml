@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$"
+        android:layout_toRightOf="@id/image"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/price_level"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:layout_toRightOf="@id/image"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/resname"
+        android:layout_below="@id/price_level"
+        style="@style/TextAppearance.AppCompat.Title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resaddress"
+        android:layout_toRightOf="@id/image"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/resname"
+        style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:text="address"
+        android:maxLength="50"
+        android:singleLine="true"
+        />
+
+</RelativeLayout>

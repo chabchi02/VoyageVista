@@ -96,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call < Model2 > call, Response < Model2 > response) {
                 Model2.Plus_code results = response.body().getplus_code();
                 String[] cityname = results.getcompound_code().split(" ", 2)[1].split(",");
-                text3.setText("You're in " + cityname[cityname.length-3].replaceAll("\\s+","") + "!");
-                userinfo.usercityname = cityname[cityname.length-3].replaceAll("\\s+","");
+                text3.setText("You're in " + cityname[cityname.length-3].trim() + "!");
+                userinfo.usercityname = cityname[cityname.length-3].trim();
+                Toast.makeText(getApplicationContext(), cityname[cityname.length-3].trim(), Toast.LENGTH_LONG).show();
                 setupcityimage();
             }
             @Override
@@ -126,30 +127,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*
-    private void setuprestaurantlist() {
-        listView = findViewById(R.id.superListView2);
-        Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
-        String loc = userinfo.Lat + "," + userinfo.Long;
-        Call< Model > call = methods.getAllData(loc);
-        call.enqueue(new Callback < Model > () {
-            @Override
-            public void onResponse(Call < Model > call, Response < Model > response) {
-                ArrayList< Model.results > results = response.body().getResults();
-                String[] names = new String[results.size()];
-                for (int i = 0; i < results.size(); i++) {
-                    names[i] = "name : " + results.get(i).getname();
-                }
-                listView.setAdapter(new ArrayAdapter< String >(getApplicationContext(), android.R.layout.simple_list_item_1, names));
-            }
-            @Override
-            public void onFailure(Call < Model > call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-     */
 
     /*
     private void setupsearchbar() {
@@ -195,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 userinfo.Lat = String.valueOf(location.getLatitude());
                 userinfo.Long = String.valueOf(location.getLongitude());
                 setupcityname();
-                //setuprestaurantlist();
             }
         });
     }
