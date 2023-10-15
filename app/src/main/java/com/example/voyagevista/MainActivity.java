@@ -53,13 +53,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.net.URI;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private LocationManager locationManager;
-    private ListView listView;
     private TextView text3;
     private ImageView cityimage;
     BottomNavigationView bnv;
@@ -81,11 +81,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if(id == R.id.item_2){
+                    Intent intent = new Intent(getApplicationContext(),EventActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });
         }
-
     private void setupcityname() {
         text3 = findViewById(R.id.text3);
         Methods2 methods2 = RetrofitClient2.getRetrofitInstance().create(Methods2.class);
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 String[] cityname = results.getcompound_code().split(" ", 2)[1].split(",");
                 text3.setText("You're in " + cityname[cityname.length-3].trim() + "!");
                 userinfo.usercityname = cityname[cityname.length-3].trim();
-                Toast.makeText(getApplicationContext(), cityname[cityname.length-3].trim(), Toast.LENGTH_LONG).show();
                 setupcityimage();
             }
             @Override

@@ -26,6 +26,9 @@
         <activity
             android:name=".RestautantActivity" >
         </activity>
+        <activity
+            android:name=".EventActivity" >
+        </activity>
     </application>
 
 </manifest>

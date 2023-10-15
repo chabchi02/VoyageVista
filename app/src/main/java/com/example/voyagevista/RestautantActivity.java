@@ -37,18 +37,15 @@ public class RestautantActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if (id == R.id.item_2) {
+                    Intent intent = new Intent(getApplicationContext(), EventActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });
         setuprestaurantlist();
-        /*
-        ListView listView = findViewById(R.id.superListView2);
-        ArrayList<Restaurant> resList = new ArrayList<>();
-        resList.add(new Restaurant("Tim Hortons", "Orleans, ON"));
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, R.layout.list_row, resList);
-        listView.setAdapter(restaurantAdapter);
-
-         */
     }
 
 

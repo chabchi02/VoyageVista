@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/image2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time"
+        android:layout_toRightOf="@id/image2"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/eventime"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:layout_toRightOf="@id/image2"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/eventname"
+        android:layout_below="@id/eventime"
+        style="@style/TextAppearance.AppCompat.Title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventdate"
+        android:layout_toRightOf="@id/image2"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/eventname"
+        style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:text="date"
+        android:maxLength="50"
+        android:singleLine="true"
+        />
+
+</RelativeLayout>
