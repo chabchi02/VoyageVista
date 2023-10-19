@@ -42,6 +42,11 @@ public class RestautantActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if (id == R.id.item_4) {
+                    Intent intent = new Intent(getApplicationContext(), HotelActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });

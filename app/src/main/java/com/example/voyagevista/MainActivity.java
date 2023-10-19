@@ -86,10 +86,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if(id == R.id.item_4){
+                    Intent intent = new Intent(getApplicationContext(),HotelActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });
-        }
+    }
     private void setupcityname() {
         text3 = findViewById(R.id.text3);
         Methods2 methods2 = RetrofitClient2.getRetrofitInstance().create(Methods2.class);
