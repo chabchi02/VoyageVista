@@ -1,8 +1,11 @@
 package com.example.voyagevista;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -59,18 +62,26 @@ public class HotelActivity extends AppCompatActivity {
         Methods5 methods = RetrofitClient5.getRetrofitInstance().create(Methods5.class);
         Calendar cal = Calendar.getInstance();
         String check_in = Integer.toString(cal.get(Calendar.YEAR)) +  "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" + Integer.toString(cal.get(Calendar.DATE));
-        String check_out = Integer.toString(cal.get(Calendar.YEAR)) +  "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" + Integer.toString(cal.get(Calendar.DATE));
+        String check_out = Integer.toString(cal.get(Calendar.YEAR)) +  "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" + Integer.toString(cal.get(Calendar.DATE)+1);
         Call< Model5 > call = methods.getAllData(check_in, "-570760", check_out);
         call.enqueue(new Callback< Model5 >() {
             @Override
             public void onResponse(Call < Model5 > call, Response< Model5 > response) {
-                ArrayList< Model5.results > results = response.body().getResults();
+                ArrayList< Model5.result > results = response.body().getResult();
                 ArrayList<Hotel> resList = new ArrayList<>();
                 for (int i = 0; i < results.size(); i++) {
-                    resList.add(new Hotel(results.get(i).getName(), results.get(i).getPhotoMainUrl(), results.get(i).getReviewScore(), results.get(i).getPriceBreakdown().getGrossPrice().getValue()));
+                    resList.add(new Hotel(results.get(i).gethotel_name(), results.get(i).getmain_photo_url(), results.get(i).getreview_score(), results.get(i).getmin_total_price(), results.get(i).getUrl()));
                 }
                 HotelAdapter hotelAdapter = new HotelAdapter(getApplicationContext(), R.layout.list_row3, resList);
                 listView.setAdapter(hotelAdapter);
+                listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Object obj = listView.getAdapter().getItem(position);
+                        Uri uri = Uri.parse(results.get(position).getUrl());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
             }
             @Override
             public void onFailure(Call < Model5 > call, Throwable t) {

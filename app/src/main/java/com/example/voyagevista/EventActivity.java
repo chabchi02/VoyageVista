@@ -1,8 +1,11 @@
 package com.example.voyagevista;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -65,10 +68,19 @@ public class EventActivity extends AppCompatActivity {
                 Model4._embedded _embedded = response.body().get_embedded();
                 ArrayList<Event> eventList = new ArrayList<>();
                 for (int i = 0; i < _embedded.getEvents().size(); i++) {
-                    eventList.add(new Event(_embedded.getEvents().get(i).getName(), _embedded.getEvents().get(i).getDates().getstart().localDate, _embedded.getEvents().get(i).getDates().getstart().localTime, _embedded.getEvents().get(i).getImages().get(0).getUrl()));
+                    eventList.add(new Event(_embedded.getEvents().get(i).getName(), _embedded.getEvents().get(i).getDates().getstart().localDate, _embedded.getEvents().get(i).getDates().getstart().localTime, _embedded.getEvents().get(i).getImages().get(0).getUrl(), _embedded.getEvents().get(i).getUrl()));
                 }
                 EventAdapter restaurantAdapter = new EventAdapter(getApplicationContext(), R.layout.list_row2, eventList);
                 listView.setAdapter(restaurantAdapter);
+                listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Object obj = listView.getAdapter().getItem(position);
+                        Uri uri = Uri.parse(_embedded.getEvents().get(position).getUrl());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+
             }
             @Override
             public void onFailure(Call < Model4 > call, Throwable t) {

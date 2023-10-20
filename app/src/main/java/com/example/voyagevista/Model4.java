@@ -14,6 +14,8 @@ public class Model4 {
         }
         public class events{
             public String name;
+            public String url;
+            public String getUrl() {return url;}
             public String getName() {
                 return name;
             }

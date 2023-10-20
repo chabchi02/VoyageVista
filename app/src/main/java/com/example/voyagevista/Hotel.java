@@ -1,14 +1,15 @@
 package com.example.voyagevista;
 
 public class Hotel {
-    String Name, photoMainUrl;
+    String Name, photoMainUrl, url;
     double reviewScore, price;
 
-    public Hotel(String name, String photoMainUrl, double reviewScore, double price) {
+    public Hotel(String name, String photoMainUrl, double reviewScore, double price, String url) {
         Name = name;
         this.photoMainUrl = photoMainUrl;
         this.reviewScore = reviewScore;
         this.price = price;
+        this.url = url;
     }
 
     public String getName() {
@@ -25,5 +26,8 @@ public class Hotel {
 
     public double getPrice() {
         return price;
+    }
+    public String getUrl() {
+        return url;
     }
 }

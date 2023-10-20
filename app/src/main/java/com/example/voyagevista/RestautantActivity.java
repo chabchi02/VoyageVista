@@ -1,9 +1,11 @@
 package com.example.voyagevista;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -69,6 +71,16 @@ public class RestautantActivity extends AppCompatActivity {
                 }
                 RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getApplicationContext(), R.layout.list_row, resList);
                 listView.setAdapter(restaurantAdapter);
+                /*listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Object obj = listView.getAdapter().getItem(position);
+                        Uri uri = Uri.parse(results.get(position).getUrl());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+
+                 */
             }
             @Override
             public void onFailure(Call < Model > call, Throwable t) {
