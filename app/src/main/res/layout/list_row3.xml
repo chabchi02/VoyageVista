@@ -6,40 +6,41 @@
 
     <ImageView
         android:id="@+id/image3"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="140dp"
+        android:layout_height="150dp"
         android:src="@color/black" />
 
     <TextView
+        android:id="@+id/hotelprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$"
-        android:layout_toRightOf="@id/image3"
         android:layout_marginLeft="20dp"
-        android:id="@+id/hotelprice"
-        />
+        android:layout_toRightOf="@id/image3"
+        android:text="$"
+        android:textSize="16sp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="name"
-        android:layout_toRightOf="@id/image3"
-        android:layout_marginLeft="20dp"
         android:id="@+id/hotelname"
-        android:layout_below="@id/hotelprice"
         style="@style/TextAppearance.AppCompat.Title"
-        />
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hotelrating"
-        android:layout_toRightOf="@id/image3"
+        android:layout_below="@id/hotelprice"
         android:layout_marginLeft="20dp"
-        android:layout_below="@id/hotelname"
+        android:layout_toRightOf="@id/image3"
+        android:maxLength="40"
+        android:text="name"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/hotelrating"
         style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
-        android:text="/10"
-        android:maxLength="50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hotelname"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/image3"
         android:singleLine="true"
-        />
+        android:text="/10"
+        android:textSize="20sp" />
 
 </RelativeLayout>

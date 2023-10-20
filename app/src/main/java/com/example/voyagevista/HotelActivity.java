@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +57,10 @@ public class HotelActivity extends AppCompatActivity {
     private void setuphotelslist() {
         ListView listView = findViewById(R.id.superListView3);
         Methods5 methods = RetrofitClient5.getRetrofitInstance().create(Methods5.class);
-        Call< Model5 > call = methods.getAllData("2023-10-19", "-570760", "2023-10-20");
+        Calendar cal = Calendar.getInstance();
+        String check_in = Integer.toString(cal.get(Calendar.YEAR)) +  "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" + Integer.toString(cal.get(Calendar.DATE));
+        String check_out = Integer.toString(cal.get(Calendar.YEAR)) +  "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" + Integer.toString(cal.get(Calendar.DATE));
+        Call< Model5 > call = methods.getAllData(check_in, "-570760", check_out);
         call.enqueue(new Callback< Model5 >() {
             @Override
             public void onResponse(Call < Model5 > call, Response< Model5 > response) {
