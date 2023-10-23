@@ -103,15 +103,12 @@ public class MainActivity extends AppCompatActivity {
     private void setupcityname() {
         text3 = findViewById(R.id.text3);
         Methods2 methods2 = RetrofitClient2.getRetrofitInstance().create(Methods2.class);
-        String ltlg = userinfo.Lat + "," + userinfo.Long;
-        Call< Model2 > call = methods2.getAllData(ltlg,"true","AIzaSyA5jevoRIytpKmKovpxlmASmrheQ6s_9jM");
+        Call< Model2 > call = methods2.getAllData(userinfo.Lat, userinfo.Long);
         call.enqueue(new Callback < Model2 > () {
             @Override
             public void onResponse(Call < Model2 > call, Response < Model2 > response) {
-                Model2.Plus_code results = response.body().getplus_code();
-                String[] cityname = results.getcompound_code().split(" ", 2)[1].split(",");
-                text3.setText("You're in " + cityname[cityname.length-3].trim() + "!");
-                userinfo.usercityname = cityname[cityname.length-3].trim();
+                text3.setText("You're in " + response.body().getCity() + "!");
+                userinfo.usercityname = response.body().getCity().trim();
                 setupcityimage();
             }
             @Override
