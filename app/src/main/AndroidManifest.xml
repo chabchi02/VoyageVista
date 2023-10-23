@@ -32,6 +32,9 @@
         <activity
             android:name=".HotelActivity" >
         </activity>
+        <activity
+            android:name=".ChatActivity" >
+        </activity>
     </application>
 
 </manifest>
