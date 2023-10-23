@@ -50,6 +50,11 @@ public class HotelActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if (id == R.id.item_4) {
+                    Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });

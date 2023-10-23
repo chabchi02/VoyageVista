@@ -58,7 +58,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private LocationManager locationManager;
     private TextView text3;
     private ImageView cityimage;
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getLocationFromUser();
-        //setupsearchbar();
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -107,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback < Model2 > () {
             @Override
             public void onResponse(Call < Model2 > call, Response < Model2 > response) {
-                text3.setText("You're in " + response.body().getCity() + "!");
                 userinfo.usercityname = response.body().getCity().trim();
                 setupcityimage();
             }
@@ -129,12 +126,30 @@ public class MainActivity extends AppCompatActivity {
                 String citynameimg = results.get(0).getPhotos().get(0).getPhoto_reference();
                 String url = "https://maps.googleapis.com/maps/api/place/photo?photoreference=" + citynameimg + "&key=AIzaSyA5jevoRIytpKmKovpxlmASmrheQ6s_9jM&maxwidth=6000&maxheight=6000";
                 Picasso.get().load(url).into(cityimage);
+                text3.setText(userinfo.usercityname);
+                getWeather();
             }
             @Override
             public void onFailure(Call < Model3 > call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void getWeather(){
+        Methods6 methods6 = RetrofitClient6.getRetrofitInstance().create(Methods6.class);
+        Call< Model6 > call = methods6.getAllData(userinfo.Lat, userinfo.Long);
+        call.enqueue(new Callback < Model6 > () {
+            @Override
+            public void onResponse(Call < Model6 > call, Response < Model6 > response) {
+                text3.setText(text3.getText().toString() + ", " + (int)Math.round(response.body().getCurrent().getTemp()) + "°C");
+            }
+            @Override
+            public void onFailure(Call < Model6 > call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     private void getLocationFromUser() {
