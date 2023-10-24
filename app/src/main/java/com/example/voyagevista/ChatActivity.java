@@ -93,10 +93,12 @@ public class ChatActivity extends AppCompatActivity {
 
         sendchatbtn.setOnClickListener((v) ->{
             String enteredpromt = prompt.getText().toString().trim();
-            addToChat(enteredpromt, "user");
-            callChatGPT(enteredpromt+" keep it brief");
-            prompt.setText("");
-            addToChat("Loading...", "bot");
+            if (enteredpromt.length()>0){
+                addToChat(enteredpromt, "user");
+                callChatGPT(enteredpromt+" keep it brief");
+                prompt.setText("");
+                addToChat("Loading...", "bot");
+            }
         });
     }
 
