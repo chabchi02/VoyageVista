@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -106,6 +107,9 @@ public class HotelActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                TextView hoteltext = findViewById(R.id.hoteltext);
+                hoteltext.setText(hoteltext.getText().toString()+ " in " + userinfo.usercityname);
+                hoteltext.setVisibility(View.VISIBLE);
             }
             @Override
             public void onFailure(Call < Model5 > call, Throwable t) {

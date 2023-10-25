@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -80,6 +81,9 @@ public class EventActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                TextView eventtext = findViewById(R.id.eventtext);
+                eventtext.setText(eventtext.getText().toString()+ " in " + userinfo.usercityname);
+                eventtext.setVisibility(View.VISIBLE);
 
             }
             @Override

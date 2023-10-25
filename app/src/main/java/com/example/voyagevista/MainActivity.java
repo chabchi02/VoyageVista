@@ -18,7 +18,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,7 +63,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
-    private TextView text3, quotetext;
+    private TextView text3, quotetext, ortext;
+    private Button itinerarybutton;
     private ImageView cityimage;
     BottomNavigationView bnv;
     public static final MediaType JSON
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getLocationFromUser();
         quotetext = findViewById(R.id.quotetext);
+        ortext = findViewById(R.id.ortext);
+        itinerarybutton = findViewById(R.id.itinerarybutton);
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -225,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 quotetext.setText(message);
+                quotetext.setVisibility(View.VISIBLE);
+                ortext.setVisibility(View.VISIBLE);
+                itinerarybutton.setVisibility(View.VISIBLE);
             }
         });
     }
