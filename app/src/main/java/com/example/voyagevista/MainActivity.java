@@ -45,8 +45,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,15 +61,19 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
-    private TextView text3;
+    private TextView text3, quotetext;
     private ImageView cityimage;
     BottomNavigationView bnv;
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient.Builder().readTimeout(60000, TimeUnit.MILLISECONDS).build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getLocationFromUser();
+        quotetext = findViewById(R.id.quotetext);
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -143,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < Model6 > call, Response < Model6 > response) {
                 text3.setText(text3.getText().toString() + ", " + (int)Math.round(response.body().getCurrent().getTemp()) + "°C");
+                callChatGPT("give a small sentence start with \"how about\" with something to in " + userinfo.usercityname);
             }
             @Override
             public void onFailure(Call < Model6 > call, Throwable t) {
@@ -164,6 +171,60 @@ public class MainActivity extends AppCompatActivity {
                 userinfo.Lat = String.valueOf(location.getLatitude());
                 userinfo.Long = String.valueOf(location.getLongitude());
                 setupcityname();
+            }
+        });
+    }
+
+    private void callChatGPT(String enteredpromt) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("model","gpt-3.5-turbo");
+            JSONArray messages = new JSONArray();
+            JSONObject obj = new JSONObject();
+            obj.put("role", "user");
+            obj.put("content", enteredpromt);
+            messages.put(obj);
+            jsonBody.put("messages", messages);
+            jsonBody.put("temperature",0.7);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(jsonBody.toString(),JSON);
+        Request request = new Request.Builder()
+                .url("https://api.openai.com/v1/chat/completions")
+                .header("Authorization","Bearer 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")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(@NonNull okhttp3.Call call, @NonNull okhttp3.Response response) throws IOException {
+                if(response.isSuccessful()){
+                    JSONObject  jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.body().string());
+                        JSONArray jsonArray = jsonObject.getJSONArray("choices");
+                        String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+                        changeUI(result);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }else{
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull okhttp3.Call call, @NonNull IOException e) {
+            }
+
+        });
+    }
+    void changeUI(String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                quotetext.setText(message);
             }
         });
     }

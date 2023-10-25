@@ -52,7 +52,7 @@ public class HotelActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
-                if (id == R.id.item_4) {
+                if (id == R.id.item_5) {
                     Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
                     startActivity(intent);
                     return true;

@@ -11,9 +11,14 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:backgroundTint="#BBE0E5"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemIconTint="@color/black"
+        app:itemRippleColor="#A0DCE5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layouttemp"
         app:menu="@menu/bottom_navigation_menu" />
 
 
@@ -38,6 +43,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView2">
 
+        <TextView
+            android:id="@+id/quotetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="TextView" />
     </FrameLayout>
 
     <TextView
