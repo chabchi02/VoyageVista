@@ -100,7 +100,9 @@
         app:layout_constraintBottom_toTopOf="@id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/welcomeText"
@@ -119,7 +121,20 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/profile"></ImageView>
+            android:src="@drawable/profile">
+        </ImageView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

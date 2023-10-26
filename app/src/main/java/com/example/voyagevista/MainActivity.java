@@ -63,10 +63,11 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
-    private TextView text3, quotetext, ortext;
+    private TextView text3, quotetext, ortext, welcomeText;
     private Button itinerarybutton;
     private ImageView cityimage;
     BottomNavigationView bnv;
+    ImageView usersettings;
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient.Builder().readTimeout(60000, TimeUnit.MILLISECONDS).build();
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         quotetext = findViewById(R.id.quotetext);
         ortext = findViewById(R.id.ortext);
         itinerarybutton = findViewById(R.id.itinerarybutton);
+        welcomeText = findViewById(R.id.welcomeText);
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -108,6 +110,16 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        usersettings = findViewById(R.id.usersettings);
+        usersettings.setOnClickListener((v) ->{
+            Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        if (userinfo.name.length()>0){
+            welcomeText.setText("Welcome, " + userinfo.name);
+        }
+
     }
     private void setupcityname() {
         text3 = findViewById(R.id.text3);
@@ -233,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 quotetext.setVisibility(View.VISIBLE);
                 ortext.setVisibility(View.VISIBLE);
                 itinerarybutton.setVisibility(View.VISIBLE);
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         });
     }
