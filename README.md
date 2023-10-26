@@ -5,5 +5,7 @@ VoyageVista is a versatile travel app designed to simplify your exploration of N
 | Content   | API source |
 | :-: | :-: |
 | Restaurants  | Google Places API    |
-| Hotels | Hotels.com/Google Places API     |
+| Hotels | Booking.com    |
 | Events    | Ticketmaster    |
+| Chatbot    | ChatGPT    |
+| Weather | OpenWeatherMap |
