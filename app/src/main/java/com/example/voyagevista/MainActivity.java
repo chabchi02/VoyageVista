@@ -6,10 +6,13 @@ import static com.squareup.picasso.Picasso.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,12 +20,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +40,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.squareup.picasso.Picasso;
 
@@ -63,11 +69,11 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
-    private TextView text3, quotetext, ortext, welcomeText;
-    private Button itinerarybutton;
+    private TextView text3, welcomeText;
     private ImageView cityimage;
+    FloatingActionButton fab;
     BottomNavigationView bnv;
-    ImageView usersettings;
+    CardView roundedButton, roundedButton2, roundedButton3, createitinerary;
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient.Builder().readTimeout(60000, TimeUnit.MILLISECONDS).build();
@@ -75,50 +81,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.home_v2);
         getLocationFromUser();
-        quotetext = findViewById(R.id.quotetext);
-        ortext = findViewById(R.id.ortext);
-        itinerarybutton = findViewById(R.id.itinerarybutton);
-        welcomeText = findViewById(R.id.welcomeText);
+        welcomeText = findViewById(R.id.textView);
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if(id == R.id.item_3){
-                    Intent intent = new Intent(getApplicationContext(),RestautantActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
                 if(id == R.id.item_2){
-                    Intent intent = new Intent(getApplicationContext(),EventActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if(id == R.id.item_4){
-                    Intent intent = new Intent(getApplicationContext(),HotelActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if(id == R.id.item_5){
-                    Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
                 return false;
             }
         });
-        usersettings = findViewById(R.id.usersettings);
-        usersettings.setOnClickListener((v) ->{
-            Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
-            startActivity(intent);
-        });
-
         if (userinfo.name.length()>0){
-            welcomeText.setText("Welcome, " + userinfo.name);
+            welcomeText.setText("Hi, " + userinfo.name);
         }
+        roundedButton = findViewById(R.id.roundedButton);
+        roundedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),HotelActivity.class);
+                startActivity(intent);
+            }
+        });
+        roundedButton2 = findViewById(R.id.roundedButton2);
+        roundedButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),EventActivity.class);
+                startActivity(intent);
+            }
+        });
+        roundedButton3 = findViewById(R.id.roundedButton3);
+        roundedButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),RestautantActivity.class);
+                startActivity(intent);
+            }
+        });
+        fab = findViewById(R.id.floating_action_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+        createitinerary = findViewById(R.id.createitinerary);
+        createitinerary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                daysPopup();
+            }
+        });
 
     }
     private void setupcityname() {
@@ -139,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupcityimage() {
-        cityimage = findViewById(R.id.imageView2);
+        cityimage = findViewById(R.id.cityImage);
         Methods3 methods3 = RetrofitClient3.getRetrofitInstance().create(Methods3.class);
         Call< Model3 > call = methods3.getAllData(userinfo.usercityname);
         call.enqueue(new Callback < Model3 > () {
@@ -166,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < Model6 > call, Response < Model6 > response) {
                 text3.setText(text3.getText().toString() + ", " + (int)Math.round(response.body().getCurrent().getTemp()) + "°C");
-                callChatGPT("give a small sentence start with \"how about\" with something to in " + userinfo.usercityname);
             }
             @Override
             public void onFailure(Call < Model6 > call, Throwable t) {
@@ -192,60 +212,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void callChatGPT(String enteredpromt) {
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("model","gpt-3.5-turbo");
-            JSONArray messages = new JSONArray();
-            JSONObject obj = new JSONObject();
-            obj.put("role", "user");
-            obj.put("content", enteredpromt);
-            messages.put(obj);
-            jsonBody.put("messages", messages);
-            jsonBody.put("temperature",0.7);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(jsonBody.toString(),JSON);
-        Request request = new Request.Builder()
-                .url("https://api.openai.com/v1/chat/completions")
-                .header("Authorization","Bearer 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")
-                .post(body)
-                .build();
+    private void daysPopup(){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(MainActivity.this.LAYOUT_INFLATER_SERVICE);
+        final View formElementsView = inflater.inflate(R.layout.dialog,null, false);
+        Spinner spinner = formElementsView.findViewById(R.id.spinner);
 
-        client.newCall(request).enqueue(new okhttp3.Callback() {
+        final Spinner _spinner = formElementsView.findViewById(R.id.spinner);
+
+        String[] vvalue = new String[]{
+                "1 day",
+                "2 days",
+                "3 days",
+                "4 days",
+                "5 days"
+        };
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MainActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, vvalue);
+        spinnerArrayAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        _spinner.setAdapter(spinnerArrayAdapter);
+
+        new AlertDialog.Builder(MainActivity.this).setView(formElementsView).setTitle("How many days are you in " + userinfo.usercityname + "?").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(@NonNull okhttp3.Call call, @NonNull okhttp3.Response response) throws IOException {
-                if(response.isSuccessful()){
-                    JSONObject  jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(response.body().string());
-                        JSONArray jsonArray = jsonObject.getJSONArray("choices");
-                        String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
-                        changeUI(result);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }else{
-                }
+            public void onClick(DialogInterface dialogInterface, int i) {
             }
-
+        }).setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
             @Override
-            public void onFailure(@NonNull okhttp3.Call call, @NonNull IOException e) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                userinfo.desireddays = spinner.getSelectedItem().toString().substring(0);
+                Intent intent = new Intent(getApplicationContext(),ItineraryActivity.class);
+                startActivity(intent);
             }
-
-        });
+        }).show();
     }
+
     void changeUI(String message){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                quotetext.setText(message);
-                quotetext.setVisibility(View.VISIBLE);
-                ortext.setVisibility(View.VISIBLE);
-                itinerarybutton.setVisibility(View.VISIBLE);
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         });
     }

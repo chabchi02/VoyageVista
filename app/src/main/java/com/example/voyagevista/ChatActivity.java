@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.chat_screen);
         bnv = findViewById(R.id.bottom_navigation);
         bnv.bringToFront();
-        bnv.setSelectedItemId(R.id.item_5);
+        bnv.setSelectedItemId(R.id.item_1);
         bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -62,17 +63,7 @@ public class ChatActivity extends AppCompatActivity {
                     return true;
                 }
                 if (id == R.id.item_2) {
-                    Intent intent = new Intent(getApplicationContext(), EventActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if (id == R.id.item_3) {
-                    Intent intent = new Intent(getApplicationContext(), RestautantActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if (id == R.id.item_4) {
-                    Intent intent = new Intent(getApplicationContext(), HotelActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,33 +25,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EventActivity extends AppCompatActivity {
-    BottomNavigationView bnv;
+    LinearLayout eventtextlayout;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.events);
-        bnv = findViewById(R.id.bottom_navigation);
-        bnv.bringToFront();
-        bnv.setSelectedItemId(R.id.item_2);
-        bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        eventtextlayout = findViewById(R.id.eventtextlayout);
+        eventtextlayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.item_1) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if (id == R.id.item_3) {
-                    Intent intent = new Intent(getApplicationContext(), RestautantActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if(id == R.id.item_4){
-                    Intent intent = new Intent(getApplicationContext(),HotelActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                return false;
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
         setEventUpList();
@@ -61,7 +46,12 @@ public class EventActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.superListView3);
         Calendar cal = Calendar.getInstance();
         Methods4 methods4 = RetrofitClient4.getRetrofitInstance().create(Methods4.class);
-        String date = Integer.toString(cal.get(Calendar.YEAR)) + "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-" +Integer.toString(cal.get(Calendar.DATE)) + "T00:00:00Z";
+        String date = Integer.toString(cal.get(Calendar.YEAR)) + "-" + Integer.toString(cal.get(Calendar.MONTH)+1) + "-";
+        if (Integer.toString(cal.get(Calendar.DATE)).length()<2){
+            date += "0" + Integer.toString(cal.get(Calendar.DATE)) + "T00:00:00Z";
+        } else{
+            date += Integer.toString(cal.get(Calendar.DATE)) + "T00:00:00Z";
+        }
         Call<Model4> call = methods4.getAllData(ltlg, date);
         call.enqueue(new Callback< Model4 >() {
             @Override
@@ -69,7 +59,7 @@ public class EventActivity extends AppCompatActivity {
                 Model4._embedded _embedded = response.body().get_embedded();
                 ArrayList<Event> eventList = new ArrayList<>();
                 for (int i = 0; i < _embedded.getEvents().size(); i++) {
-                    eventList.add(new Event(_embedded.getEvents().get(i).getName(), _embedded.getEvents().get(i).getDates().getstart().localDate, _embedded.getEvents().get(i).getDates().getstart().localTime, _embedded.getEvents().get(i).getImages().get(0).getUrl(), _embedded.getEvents().get(i).getUrl()));
+                    eventList.add(new Event(_embedded.getEvents().get(i).getName(), _embedded.getEvents().get(i).getDates().getstart().getLocalDate(), _embedded.getEvents().get(i).getDates().getstart().getLocalTime(), _embedded.getEvents().get(i).getImages().get(0).getUrl(), _embedded.getEvents().get(i).getUrl()));
                 }
                 EventAdapter restaurantAdapter = new EventAdapter(getApplicationContext(), R.layout.list_row2, eventList);
                 listView.setAdapter(restaurantAdapter);

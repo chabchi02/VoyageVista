@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,33 +25,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RestautantActivity extends AppCompatActivity {
-    BottomNavigationView bnv;
+    LinearLayout restauranttextlayout;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurants);
-        bnv = findViewById(R.id.bottom_navigation);
-        bnv.bringToFront();
-        bnv.setSelectedItemId(R.id.item_3);
-        bnv.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        restauranttextlayout = findViewById(R.id.restauranttextlayout);
+        restauranttextlayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.item_1) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if (id == R.id.item_2) {
-                    Intent intent = new Intent(getApplicationContext(), EventActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                if (id == R.id.item_4) {
-                    Intent intent = new Intent(getApplicationContext(), HotelActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                return false;
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
         setuprestaurantlist();
