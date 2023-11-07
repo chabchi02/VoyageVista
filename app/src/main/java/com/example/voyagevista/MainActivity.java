@@ -1,8 +1,6 @@
 package com.example.voyagevista;
 
-import static com.android.volley.VolleyLog.TAG;
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
-import static com.squareup.picasso.Picasso.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,52 +16,31 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceTypes;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.net.URI;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient.Builder().readTimeout(60000, TimeUnit.MILLISECONDS).build();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < Model6 > call, Response < Model6 > response) {
                 text3.setText(text3.getText().toString() + ", " + (int)Math.round(response.body().getCurrent().getTemp()) + "°C");
+                checkGoCity();
             }
             @Override
             public void onFailure(Call < Model6 > call, Throwable t) {
@@ -207,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(@NonNull Location location) {
                 userinfo.Lat = String.valueOf(location.getLatitude());
                 userinfo.Long = String.valueOf(location.getLongitude());
+                userinfo.shown=0;
                 setupcityname();
             }
         });
@@ -250,5 +230,29 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
             }
         });
+    }
+
+    private void checkGoCity(){
+        if (userinfo.shown==0){
+            if (Arrays.stream(CityPass.cities).anyMatch(userinfo.usercityname::equals)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this).setTitle("Good news!"). setMessage("Buy a discounted package of top things to do in " + userinfo.usercityname + " with CityPASS!");
+
+                builder.setPositiveButton("Visit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Uri uri = Uri.parse("https://citypass.com/" + userinfo.usercityname.replace(" ", "-"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("No thanks", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                userinfo.shown = 1;
+                dialog.show();
+            }
+        }
     }
 }
