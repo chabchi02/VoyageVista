@@ -41,6 +41,9 @@
         <activity
             android:name=".ItineraryActivity">
         </activity>
+        <activity
+            android:name=".SavedItineraryActivity">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

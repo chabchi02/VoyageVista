@@ -5,39 +5,38 @@
     android:padding="8dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/responsechat"
-        android:background="@drawable/corner"
-        android:backgroundTint="#2F2963"
-        android:padding="8dp"
-        android:layout_marginEnd="80dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/responsechat_view"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sentchat"
-        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp"
         android:background="@drawable/corner"
-        android:backgroundTint="#70877F"
-        android:padding="8dp"
-        android:layout_marginStart="80dp"
-        >
+        android:backgroundTint="#759592"
+        android:padding="8dp">
+
         <TextView
+            android:id="@+id/responsechat_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/sentchat_view"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sentchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="80dp"
+        android:background="@drawable/corner"
+        android:backgroundTint="#496D60"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/sentchat_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </RelativeLayout>

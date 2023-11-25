@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,8 +18,18 @@
             android:id="@+id/imageView4"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:srcCompat="@drawable/back" />
-    </LinearLayout>
+            app:srcCompat="@drawable/back"
+            android:layout_alignParentLeft="true"/>
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/star1" />
+    </RelativeLayout>
 
     <WebView
         android:id="@+id/webview1"

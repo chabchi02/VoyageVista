@@ -86,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
             String enteredpromt = prompt.getText().toString().trim();
             if (enteredpromt.length()>0){
                 addToChat(enteredpromt, "user");
-                callChatGPT(enteredpromt+" keep it brief");
+                callChatGPT(enteredpromt+" I'm in " + userinfo.usercityname + " keep it brief");
                 prompt.setText("");
                 addToChat("Loading...", "bot");
             }

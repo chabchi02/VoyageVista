@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                if(id == R.id.item_3){
+                    Intent intent = new Intent(getApplicationContext(),SavedItineraryActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             }
         });
@@ -186,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(@NonNull Location location) {
                 userinfo.Lat = String.valueOf(location.getLatitude());
                 userinfo.Long = String.valueOf(location.getLongitude());
-                userinfo.shown=0;
                 setupcityname();
             }
         });

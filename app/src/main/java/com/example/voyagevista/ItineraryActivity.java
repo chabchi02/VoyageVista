@@ -1,9 +1,11 @@
 package com.example.voyagevista;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,6 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -30,21 +35,40 @@ import okhttp3.Response;
 public class ItineraryActivity extends AppCompatActivity {
 
     WebView webView1;
-    LinearLayout linearLayout3;
+    ImageView imageView4, imageView6;
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
-    OkHttpClient client = new OkHttpClient.Builder().readTimeout(60000, TimeUnit.MILLISECONDS).build();
+    OkHttpClient client = new OkHttpClient.Builder().readTimeout(600000, TimeUnit.MILLISECONDS).build();
     RelativeLayout loadingPanel;
+    String savedhtml;
+    int isStarred;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.itinerary);
-        linearLayout3 = findViewById(R.id.linearLayout3);
-        linearLayout3.setOnClickListener(new View.OnClickListener() {
+        imageView4 = findViewById(R.id.imageView4);
+        imageView6 = findViewById(R.id.imageView6);
+        savedhtml = "<p>No itinerary saved</p>";
+        isStarred = 0;
+        imageView4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+            }
+        });
+        imageView6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isStarred == 0){
+                    saveItinerary(savedhtml);
+                    imageView6.setImageResource(R.drawable.star2);
+                    isStarred = 1;
+                } else{
+                    isStarred = 0;
+                    saveItinerary("<p>No itinerary saved</p>");
+                    imageView6.setImageResource(R.drawable.star1);
+                }
             }
         });
         loadingPanel = findViewById(R.id.loadingPanel);
@@ -108,9 +132,22 @@ public class ItineraryActivity extends AppCompatActivity {
             @Override
             public void run() {
                 loadingPanel.setVisibility(View.INVISIBLE);
+                imageView6.setVisibility(View.VISIBLE);
+                savedhtml = message;
                 webView1.loadDataWithBaseURL(null,message, "text/html", "UTF-8",null);
             }
         });
+    }
+
+    void saveItinerary(String message){
+        File path = getApplicationContext().getFilesDir();
+        try {
+            FileOutputStream writer = new FileOutputStream(new File(path, "itinerary.txt"));
+            writer.write(message.getBytes());
+            writer.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
